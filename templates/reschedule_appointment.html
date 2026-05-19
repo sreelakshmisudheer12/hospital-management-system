@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .reschedule-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+    }
+
+    .reschedule-card {
+        width: 420px;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .reschedule-card h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1e40af;
+    }
+
+    label {
+        font-weight: bold;
+        font-size: 14px;
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        color: #1f2937;
+    }
+
+    input[type="date"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 15px;
+        padding: 10px;
+        border: none;
+        background: #1e40af;
+        color: white;
+        font-size: 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #1d4ed8;
+    }
+</style>
+
+<div class="reschedule-container">
+
+    <div class="reschedule-card">
+
+        <h2>📅 Reschedule Appointment</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>New Date</label>
+            <input type="date" name="appointment_date" required>
+
+            <label>Reason</label>
+            <textarea name="reason" rows="4" placeholder="Enter reason..."></textarea>
+
+            <button type="submit" class="btn">
+                Update Appointment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

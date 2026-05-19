@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="doctor-container">
+
+    <div class="doctor-card">
+
+        {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}"
+                 class="doctor-photo">
+        {% endif %}
+
+        <div class="doctor-info">
+
+            <h1>
+                Dr. {{ doctor.user.username }}
+            </h1>
+
+            <p>
+                <strong>Doctor ID:</strong>
+                {{ doctor.doctor_id }}
+            </p>
+
+            <p>
+                <strong>Department:</strong>
+                {{ doctor.department.name }}
+            </p>
+
+            <p>
+                <strong>Specialization:</strong>
+                {{ doctor.specialization }}
+            </p>
+
+            <p>
+                <strong>Experience:</strong>
+                {{ doctor.experience }} Years
+            </p>
+
+            <p>
+                <strong>Consultation Fee:</strong>
+                ₹{{ doctor.consultation_fee }}
+            </p>
+
+            <p>
+                <strong>Available Days:</strong>
+                {{ doctor.available_days }}
+            </p>
+
+            <p>
+                <strong>Available Time:</strong>
+                {{ doctor.available_time }}
+            </p>
+
+            <p>
+                <strong>Contact:</strong>
+                {{ doctor.contact }}
+            </p>
+
+            <p>
+                <strong>Bio:</strong>
+                {{ doctor.bio }}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

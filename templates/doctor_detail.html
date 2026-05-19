@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.doctor-container{
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.doctor-card{
+    display:flex;
+    gap:30px;
+    background:#ffffff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.doctor-photo{
+    width:200px;
+    height:200px;
+    border-radius:12px;
+    object-fit:cover;
+    background:#e5e7eb;
+}
+
+.doctor-info h1{
+    margin-bottom:10px;
+}
+
+.doctor-info p{
+    margin:8px 0;
+    color:#374151;
+}
+
+.label{
+    font-weight:600;
+    color:#111827;
+}
+
+.book-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 18px;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.book-btn:hover{
+    background:#1d4ed8;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    background:#10b981;
+    color:white;
+    border-radius:8px;
+    font-size:12px;
+    margin-top:5px;
+}
+
+</style>
+
+<div class="doctor-container">
+
+    <div class="doctor-card">
+
+        <!-- DOCTOR IMAGE -->
+        <div>
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}" class="doctor-photo">
+            {% else %}
+                <img src="https://via.placeholder.com/200" class="doctor-photo">
+            {% endif %}
+        </div>
+
+        <!-- DOCTOR INFO -->
+        <div class="doctor-info">
+
+            <h1>Dr. {{ doctor.user.username }}</h1>
+
+            {% if doctor.approved %}
+                <span class="badge">Approved</span>
+            {% else %}
+                <span class="badge" style="background:#f59e0b;">Pending</span>
+            {% endif %}
+
+            <p><span class="label">Specialization:</span> {{ doctor.specialization }}</p>
+
+            <p><span class="label">Department:</span> {{ doctor.department }}</p>
+
+            <p><span class="label">Experience:</span> {{ doctor.experience }} years</p>
+
+            <p><span class="label">Fee:</span> ₹{{ doctor.consultation_fee }}</p>
+
+            <p><span class="label">Available Days:</span> {{ doctor.available_days }}</p>
+
+            <p><span class="label">Available Time:</span> {{ doctor.available_time }}</p>
+
+            <!-- BOOK APPOINTMENT -->
+            <a href="{% url 'book_appointment' doctor.id %}" class="book-btn">
+                Book Appointment
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

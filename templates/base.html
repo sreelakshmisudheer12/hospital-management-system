@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital Appointment Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(90deg, #2563eb, #1e40af);
+            padding: 14px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s ease;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .login-btn {
+            background: white;
+            color: #2563eb;
+        }
+
+        .register-btn {
+            background: #facc15;
+            color: black;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .dashboard-btn {
+            background: #22c55e;
+            color: white;
+        }
+
+        .user-text {
+            color: white;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        /* PAGE CONTENT */
+        .content {
+            padding: 25px;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 40px;
+            padding: 15px;
+            text-align: center;
+            background: #1e293b;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Logout button inside form */
+        .logout-form {
+            display: inline;
+        }
+
+        .logout-form button {
+            border: none;
+            cursor: pointer;
+            font: inherit;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <a href="{% url 'home' %}" class="logo">
+        🏥 MediCare
+    </a>
+
+    <div class="nav-links">
+
+        {% if user.is_authenticated %}
+
+            <span class="user-text">
+                Hello, {{ user.username }}
+            </span>
+
+            {% if user.role|default:'' == 'DOCTOR' %}
+                <a href="{% url 'doctor_dashboard' %}" class="nav-btn dashboard-btn">
+                    Doctor Dashboard
+                </a>
+
+            
+            {% elif user.role|default:'' == 'PATIENT' %}
+
+                <a href="{% url 'patient_dashboard' %}" class="nav-btn dashboard-btn">
+                    Patient Dashboard
+                </a>
+
+            {% endif %}
+
+            <!-- ✅ FIXED LOGOUT (POST request) -->
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="nav-btn logout-btn">
+                    Logout
+                </button>
+            </form>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="nav-btn login-btn">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}" class="nav-btn register-btn">
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 MediCare Hospital Appointment System | All Rights Reserved
+</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+myenv/
+venv/
+env/
+
+# Django database
+db.sqlite3
+
+# Environment variables
+.env
+
+# Static files collected by Django
+staticfiles/
+
+# Media files (optional)
+media/
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Mac system files
+.DS_Store
+
+# Logs
+*.log

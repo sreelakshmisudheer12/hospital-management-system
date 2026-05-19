@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Patient Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.dashboard{
+    padding:60px 8%;
+}
+
+.dashboard-header{
+    margin-bottom:40px;
+}
+
+.dashboard-header h1{
+    font-size:42px;
+    color:#111827;
+    margin-bottom:10px;
+}
+
+.dashboard-header p{
+    color:#6b7280;
+    font-size:17px;
+}
+
+.card-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+}
+
+.dashboard-card{
+    background:white;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
+    transition:0.3s ease;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-5px);
+}
+
+.card-icon{
+    width:65px;
+    height:65px;
+
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:28px;
+
+    margin-bottom:20px;
+}
+
+.blue{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.green{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+.purple{
+    background:#ede9fe;
+    color:#7c3aed;
+}
+
+.dashboard-card h3{
+    font-size:26px;
+    margin-bottom:12px;
+    color:#111827;
+}
+
+.dashboard-card p{
+    color:#6b7280;
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+.button-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.dashboard-btn{
+    padding:12px 18px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+.dashboard-btn:hover{
+    transform:translateY(-2px);
+    opacity:0.9;
+}
+
+.btn-blue{
+    background:#2563eb;
+}
+
+.btn-green{
+    background:#16a34a;
+}
+
+.btn-purple{
+    background:#7c3aed;
+}
+
+.stats-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
+
+    margin-bottom:40px;
+}
+
+.stat-card{
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+
+    text-align:center;
+}
+
+.stat-card h2{
+    font-size:35px;
+    color:#2563eb;
+    margin-bottom:8px;
+}
+
+.stat-card p{
+    color:#6b7280;
+    font-weight:500;
+}
+
+@media(max-width:768px){
+
+    .dashboard{
+        padding:40px 5%;
+    }
+
+    .dashboard-header h1{
+        font-size:34px;
+    }
+}
+
+</style>
+
+<div class="dashboard">
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <h1>
+            Welcome,
+            {{ request.user.username }}
+        </h1>
+
+        <p>
+            Manage your appointments,
+            reports,
+            and healthcare activities easily.
+        </p>
+
+    </div>
+
+    <!-- QUICK STATS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <h2>
+                {{ total_appointments }}
+            </h2>
+
+            <p>
+                Total Appointments
+            </p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ completed_appointments }}
+            </h2>
+
+            <p>
+                Completed
+            </p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>
+                {{ pending_appointments }}
+            </h2>
+
+            <p>
+                Pending
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- DASHBOARD CARDS -->
+
+    <div class="card-grid">
+
+        <!-- BOOK APPOINTMENT -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon blue">
+
+                📅
+
+            </div>
+
+            <h3>
+                Book Appointment
+            </h3>
+
+            <p>
+                Search doctors by department
+                and schedule appointments online.
+            </p>
+
+            <div class="button-group">
+
+                <a href="{% url 'search_doctors' %}"
+                   class="dashboard-btn btn-blue">
+
+                    Book Now
+
+                </a>
+
+                <a href="{% url 'appointment_history' %}"
+                   class="dashboard-btn btn-purple">
+
+                    History
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- MEDICAL REPORTS -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon green">
+
+                📄
+
+            </div>
+
+            <h3>
+                Medical Reports
+            </h3>
+
+            <p>
+                View uploaded reports,
+                prescriptions,
+                and medical documents.
+            </p>
+
+            <div class="button-group">
+
+                <a href="{% url 'view_reports' %}"
+                   class="dashboard-btn btn-green">
+
+                    View Reports
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- FEEDBACK -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon purple">
+
+                💬
+
+            </div>
+
+            <h3>
+                Feedback & Reviews
+            </h3>
+
+            <p>
+                Share your hospital experience
+                and view submitted feedbacks.
+            </p>
+
+            <div class="button-group">
+
+                <a href="{% url 'add_feedback' %}"
+                   class="dashboard-btn btn-blue">
+
+                    Give Feedback
+
+                </a>
+
+                <a href="{% url 'view_feedbacks' %}"
+                   class="dashboard-btn btn-green">
+
+                    View Feedbacks
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

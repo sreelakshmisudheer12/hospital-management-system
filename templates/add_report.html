@@ -1,0 +1,165 @@
+% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.report-container{
+    max-width:700px;
+    margin:30px auto;
+    padding:25px;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    font-family:Arial, sans-serif;
+}
+
+.report-container h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#1e293b;
+}
+
+/* PATIENT INFO BOX */
+.patient-box{
+    background:#f1f5f9;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+/* FORM GRID */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.full{
+    grid-column:1 / -1;
+}
+
+label{
+    font-size:13px;
+    font-weight:bold;
+    color:#374151;
+}
+
+input, textarea, select{
+    width:100%;
+    padding:10px;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    margin-top:5px;
+    font-size:14px;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    background:#16a34a;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#15803d;
+}
+
+/* SECTION TITLE */
+.section-title{
+    margin-top:20px;
+    font-size:14px;
+    font-weight:bold;
+    color:#1e40af;
+}
+
+</style>
+
+<div class="report-container">
+
+    <h2>🩺 Medical Prescription / Report</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- PATIENT DETAILS (AUTO) -->
+        <div class="section-title">Patient Details</div>
+
+        <div class="patient-box">
+            <strong>Name:</strong> {{ appointment.patient.user.username }} <br>
+            <strong>Token:</strong> {{ appointment.token_number }} <br>
+            <strong>Date:</strong> {{ appointment.appointment_date }}
+        </div>
+
+        <!-- VITALS -->
+        <div class="section-title">Vitals</div>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Age</label>
+                <input type="number" name="age">
+            </div>
+
+            <div>
+                <label>Weight (kg)</label>
+                <input type="number" name="weight">
+            </div>
+
+            <div>
+                <label>Blood Pressure</label>
+                <input type="text" name="bp" placeholder="120/80">
+            </div>
+
+            <div>
+                <label>Temperature (°F)</label>
+                <input type="text" name="temperature">
+            </div>
+
+        </div>
+
+        <!-- MEDICAL DETAILS -->
+        <div class="section-title">Medical Details</div>
+
+        <div class="form-grid">
+
+            <div class="full">
+                <label>Diagnosis</label>
+                <textarea name="diagnosis" rows="2"></textarea>
+            </div>
+
+            <div class="full">
+                <label>Prescription (Medicines)</label>
+                <textarea name="prescription" rows="3"></textarea>
+            </div>
+
+            <div class="full">
+                <label>Notes</label>
+                <textarea name="notes" rows="2"></textarea>
+            </div>
+
+        </div>
+
+        <!-- ATTACHMENT -->
+        <div class="section-title">Attachments (Optional)</div>
+
+        <input type="file" name="report_file">
+
+        <!-- SUBMIT -->
+        <button type="submit">
+            💾 Save Medical Report
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

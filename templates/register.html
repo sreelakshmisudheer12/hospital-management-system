@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .register-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 85vh;
+    }
+
+    .register-card {
+        width: 420px;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .register-card h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1e40af;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 6px;
+        color: #374151;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #2563eb;
+    }
+
+    .register-btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(to right, #facc15, #f59e0b);
+        color: black;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .register-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .login-link a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* ERROR BOX */
+    .error-box {
+        background: #fee2e2;
+        color: #b91c1c;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+</style>
+
+<div class="register-container">
+
+    <div class="register-card">
+
+        <h2>Create Account</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- 🔴 SHOW FORM ERRORS -->
+            {% if form.errors %}
+                <div class="error-box">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label>Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+
+            <div class="form-group">
+                <label>Register As</label>
+                <select name="role" required>
+                    <option value="PATIENT">Patient</option>
+                    <option value="DOCTOR">Doctor</option>
+                </select>
+            </div>
+
+            <button type="submit" class="register-btn">
+                Register
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            Already have an account?
+            <a href="{% url 'login' %}">Login here</a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

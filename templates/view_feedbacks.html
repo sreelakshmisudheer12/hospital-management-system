@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.feedback-list{
+    max-width:800px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.feedback-card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.1);
+}
+
+.feedback-card h3{
+    margin-bottom:10px;
+}
+
+.feedback-meta{
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+.feedback-message{
+    background:#f3f4f6;
+    padding:12px;
+    border-radius:10px;
+}
+
+.delete-btn{
+    display:inline-block;
+    margin-top:12px;
+    padding:8px 14px;
+    background:#ef4444;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
+
+</style>
+
+<div class="feedback-list">
+
+    <h2 style="text-align:center; margin-bottom:30px;">
+        Patient Feedbacks
+    </h2>
+
+    {% for feedback in feedbacks %}
+
+        <div class="feedback-card">
+
+            <h3>
+                Dr. {{ feedback.doctor.user.username }}
+            </h3>
+
+            <div class="feedback-meta">
+                From: {{ feedback.patient.user.username }} |
+                {{ feedback.created_at }}
+            </div>
+
+            <div class="feedback-message">
+                {{ feedback.message }}
+            </div>
+
+            {% if request.user == feedback.patient.user %}
+
+                <a
+                    href="{% url 'delete_feedback' feedback.id %}"
+                    class="delete-btn"
+                >
+                    Delete
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <p style="text-align:center;">
+            No feedback available.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

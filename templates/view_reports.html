@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.page{
+    padding:50px 8%;
+    background:#f8fafc;
+    font-family:Arial, sans-serif;
+}
+
+.header{
+    margin-bottom:30px;
+}
+
+.header h1{
+    font-size:28px;
+    color:#0f172a;
+}
+
+.header p{
+    color:#64748b;
+    margin-top:5px;
+}
+
+/* CARD */
+.report-card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+    border:1px solid #eef2f7;
+}
+
+/* TOP ROW */
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.doctor{
+    font-size:18px;
+    font-weight:bold;
+    color:#1e293b;
+}
+
+.date{
+    font-size:13px;
+    color:#94a3b8;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:10px;
+    margin-top:10px;
+}
+
+.item{
+    font-size:14px;
+    color:#334155;
+}
+
+.item strong{
+    color:#0f172a;
+}
+
+/* SECTION */
+.section-title{
+    margin-top:15px;
+    font-size:13px;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+/* BUTTONS */
+.actions{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:10px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+}
+
+.download{
+    background:#2563eb;
+    color:white;
+}
+
+.generate{
+    background:#10b981;
+    color:white;
+}
+
+.empty{
+    text-align:center;
+    color:#94a3b8;
+    margin-top:50px;
+}
+
+</style>
+
+<div class="page">
+
+    <div class="header">
+        <h1>Medical Reports</h1>
+        <p>Your complete prescription history</p>
+    </div>
+
+    {% for report in reports %}
+
+    <div class="report-card">
+
+        <!-- TOP -->
+        <div class="top">
+            <div class="doctor">
+                Dr. {{ report.appointment.doctor.user.username }}
+            </div>
+            <div class="date">
+                {{ report.uploaded_at }}
+            </div>
+        </div>
+
+        <!-- PATIENT INFO -->
+        <div class="section-title">Patient Information</div>
+        <div class="grid">
+            <div class="item"><strong>Name:</strong> {{ report.appointment.patient.user.username }}</div>
+            <div class="item"><strong>Age:</strong> {{ report.age }}</div>
+            <div class="item"><strong>Gender:</strong> {{ report.gender }}</div>
+            <div class="item"><strong>Weight:</strong> {{ report.weight }} kg</div>
+        </div>
+
+        <!-- VITALS -->
+        <div class="section-title">Vitals</div>
+        <div class="grid">
+            <div class="item"><strong>BP:</strong> {{ report.bp }}</div>
+            <div class="item"><strong>Temperature:</strong> {{ report.temperature }}</div>
+        </div>
+
+        <!-- MEDICAL -->
+        <div class="section-title">Medical Details</div>
+        <div class="item"><strong>Diagnosis:</strong> {{ report.diagnosis }}</div>
+        <div class="item"><strong>Prescription:</strong> {{ report.prescription }}</div>
+        <div class="item"><strong>Notes:</strong> {{ report.notes }}</div>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+
+            {% if report.report_file %}
+                <a href="{% url 'download_report' report.id %}" class="btn download">
+                    ⬇ Download File
+                </a>
+            {% endif %}
+
+            <!-- ALWAYS AVAILABLE DOWNLOAD (PDF VIEW OR GENERATED REPORT) -->
+            <a href="{% url 'download_report' report.id %}?format=full" class="btn generate">
+                📄 Download Full Report
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <p class="empty">No reports available.</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    h2 {
+        margin-bottom: 20px;
+        color: #1e293b;
+        font-family: Arial, sans-serif;
+    }
+
+    h3.date-header {
+        margin-top: 25px;
+        background: #1e40af;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        font-family: Arial, sans-serif;
+        margin-bottom: 20px;
+    }
+
+    th {
+        background: #1e40af;
+        color: white;
+        padding: 12px;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    td {
+        padding: 12px;
+        font-size: 14px;
+        color: #1f2937;
+    }
+
+    tr {
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    tr:hover {
+        background: #f9fafb;
+    }
+
+    .status {
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 6px;
+        display: inline-block;
+    }
+
+    .pending { color: orange; }
+    .approved { color: green; }
+    .rejected { color: red; }
+    .completed { color: blue; }
+
+    .btn {
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        margin-right: 5px;
+        display: inline-block;
+    }
+
+    .approve { background: green; }
+    .reject { background: red; }
+    .complete { background: blue; }
+    .report { background: #16a34a; }
+    .delete { background: black; }
+</style>
+
+<h2>📋 Doctor Appointments</h2>
+
+{% if appointments %}
+
+    {% regroup appointments by appointment_date as date_groups %}
+
+    {% for group in date_groups %}
+
+        <h3 class="date-header">
+            📅 {{ group.grouper }}
+        </h3>
+
+        <table>
+
+            <tr>
+                <th>Patient</th>
+                <th>Token</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for app in group.list %}
+            <tr style="text-align:center;">
+
+                <td>{{ app.patient.user.username }}</td>
+
+                <td>{{ app.token_number|default:"-" }}</td>
+
+                <td>{{ app.reason }}</td>
+
+                <td>
+                    {% if app.status == "PENDING" %}
+                        <span class="status pending">{{ app.status }}</span>
+                    {% elif app.status == "APPROVED" %}
+                        <span class="status approved">{{ app.status }}</span>
+                   
+                    {% elif app.status == "COMPLETED" %}
+                        <span class="status completed">{{ app.status }}</span>
+                    {% endif %}
+                </td>
+
+                <td>
+
+                    {% if app.status == "PENDING" %}
+                        <a href="{% url 'approve_appointment' app.id %}" class="btn approve">Approve</a>
+                        
+
+                    {% elif app.status == "APPROVED" %}
+                        <a href="{% url 'complete_appointment' app.id %}" class="btn complete">Mark Completed</a>
+
+                    {% elif app.status == "COMPLETED" %}
+                        <a href="{% url 'add_report' app.id %}" class="btn report">Add Report</a>
+                    {% endif %}
+
+                    <a href="{% url 'delete_appointment' app.id %}"
+                       onclick="return confirm('Are you sure?');"
+                       class="btn delete">
+                        Delete
+                    </a>
+
+                </td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    {% endfor %}
+
+{% else %}
+
+<p>No appointments found.</p>
+
+{% endif %}
+
+{% endblock %}

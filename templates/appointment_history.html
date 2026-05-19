@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.history-container{
+    max-width:800px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.history-container h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.appointment-card{
+    background:#ffffff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom:20px;
+}
+
+.appointment-card h2{
+    margin-bottom:10px;
+    color:#111827;
+}
+
+.appointment-card p{
+    margin:6px 0;
+}
+
+.action-btn{
+    display:inline-block;
+    padding:10px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    margin-right:10px;
+    margin-top:10px;
+}
+
+.cancel-btn{
+    background:#ef4444;
+}
+
+.edit-btn{
+    background:#2563eb;
+}
+
+.pdf-btn{
+    background:#16a34a;
+}
+
+.delete-btn{
+    background:#6b7280;
+}
+
+.action-btn:hover{
+    opacity:0.85;
+}
+
+</style>
+
+<div class="history-container">
+
+    <h1>Appointment History</h1>
+
+    {% for appointment in appointments %}
+
+        <div class="appointment-card">
+
+            <h2>Dr. {{ appointment.doctor.user.username }}</h2>
+
+            <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
+
+            <p><strong>Status:</strong> {{ appointment.status }}</p>
+
+            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+
+            <!-- TOKEN -->
+            <p>
+                <strong>Token:</strong>
+                {{ appointment.token_number|default:"Not Generated" }}
+            </p>
+
+            <!-- ACTION BUTTONS -->
+            <a href="{% url 'cancel_appointment' appointment.id %}"
+               class="action-btn cancel-btn">
+                Cancel
+            </a>
+
+            <a href="{% url 'reschedule_appointment' appointment.id %}"
+               class="action-btn edit-btn">
+                Reschedule
+            </a>
+
+            <!-- PDF DOWNLOAD -->
+            {% if appointment.status == "APPROVED" or appointment.status == "COMPLETED" %}
+                <a href="{% url 'download_appointment' appointment.id %}"
+                   class="action-btn pdf-btn">
+                    Download PDF
+                </a>
+            {% endif %}
+
+            <!-- DELETE -->
+            {% if appointment.status == "COMPLETED" or appointment.status == "CANCELLED" %}
+                <a href="{% url 'delete_appointment' appointment.id %}"
+                   class="action-btn delete-btn">
+                    Delete
+                </a>
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <p style="text-align:center;">
+            No appointments found.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

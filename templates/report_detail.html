@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.container {
+    width: 65%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+.box {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.row {
+    margin-bottom: 12px;
+}
+
+.label {
+    font-weight: bold;
+    color: #34495e;
+}
+
+.file-link a {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+.file-link a:hover {
+    text-decoration: underline;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.back-btn:hover {
+    background: #1f6fa5;
+}
+
+.note-box {
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+</style>
+
+<div class="container">
+
+    <h2>Medical Report Details</h2>
+
+    <div class="box">
+
+        <div class="row">
+            <span class="label">Report ID:</span>
+            {{ report.id }}
+        </div>
+
+        <div class="row">
+            <span class="label">Appointment ID:</span>
+            {{ report.appointment.id }}
+        </div>
+
+        <div class="row">
+            <span class="label">Patient:</span>
+            {{ report.appointment.patient.user.username }}
+        </div>
+
+        <div class="row">
+            <span class="label">Doctor:</span>
+            {{ report.appointment.doctor.user.username }}
+        </div>
+
+        <div class="row file-link">
+            <span class="label">Report File:</span>
+
+            {% if report.report_file %}
+                <a href="{{ report.report_file.url }}" target="_blank">
+                    Download / View File
+                </a>
+            {% else %}
+                No file uploaded
+            {% endif %}
+
+        </div>
+
+        <div class="row">
+            <span class="label">Doctor Notes:</span>
+            <div class="note-box">
+                {{ report.doctor_notes }}
+            </div>
+        </div>
+
+        <div class="row">
+            <span class="label">Uploaded At:</span>
+            {{ report.uploaded_at }}
+        </div>
+
+    </div>
+
+    <a href="{% url 'view_reports' %}" class="back-btn">
+        ← Back to Reports
+    </a>
+
+</div>
+
+{% endblock %}

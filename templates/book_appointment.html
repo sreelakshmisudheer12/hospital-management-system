@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.booking-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    background: #f8fafc;
+}
+
+.booking-card {
+    width: 450px;
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.booking-card h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #111827;
+    text-align: center;
+}
+
+.doctor-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.doctor-info p {
+    margin: 6px 0;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+}
+
+.form-group textarea {
+    resize: none;
+}
+
+.booking-btn {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.booking-btn:hover {
+    background: #1d4ed8;
+}
+</style>
+
+<div class="booking-container">
+
+    <div class="booking-card">
+
+        <h2>Book Appointment</h2>
+
+        <!-- Doctor Info -->
+        <div class="doctor-info">
+            <p><b>Doctor:</b> Dr. {{ doctor.user.username }}</p>
+            <p><b>Specialization:</b> {{ doctor.specialization }}</p>
+        </div>
+
+        <!-- Booking Form -->
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Available Schedule</label>
+
+                <select name="schedule" required>
+
+                    <option value="">
+                        Select Schedule
+                    </option>
+
+                    {% for s in schedules %}
+                        <option value="{{ s.id }}">
+                            {{ s.day }} - {{ s.start_time }} to {{ s.end_time }}
+                        </option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Reason</label>
+                <textarea name="reason" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="booking-btn">
+                Confirm Appointment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

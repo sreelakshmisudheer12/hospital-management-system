@@ -1,0 +1,53 @@
+<form method="GET"
+      style="
+      margin-bottom:30px;
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+      ">
+
+    <input type="text"
+           name="search"
+           placeholder="Search specialization..."
+           style="
+           padding:12px;
+           flex:1;
+           border-radius:10px;
+           border:1px solid #d1d5db;
+           ">
+
+    <select name="department"
+            style="
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #d1d5db;
+            ">
+
+        <option value="">
+            All Departments
+        </option>
+
+        {% for department in departments %}
+
+        <option value="{{ department.id }}">
+            {{ department.name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <button type="submit"
+            style="
+            padding:12px 20px;
+            background:#2563eb;
+            color:white;
+            border:none;
+            border-radius:10px;
+            ">
+
+        Search
+
+    </button>
+
+</form>
